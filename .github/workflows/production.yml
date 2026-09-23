@@ -1,3 +1,4 @@
+```yaml
 name: React CI/CD - Vercel Production
 
 on:
@@ -34,59 +35,81 @@ jobs:
       - name: Install Vercel CLI
         run: npm install --global vercel@latest
 
-      # 6. Check Vercel authentication
-      - name: Check Vercel authentication
+      # 6. Verify Vercel token exists
+      - name: Verify Vercel token
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          vercel whoami --token "$VERCEL_TOKEN"
+          if [ -z "$VERCEL_TOKEN" ]; then
+            echo "ERROR: VERCEL_TOKEN GitHub secret is empty or missing."
+            exit 1
+          fi
+
+          echo "VERCEL_TOKEN is present."
+          echo "Token length: ${#VERCEL_TOKEN}"
+
+      # 7. Check Vercel authentication
+      - name: Check Vercel authentication
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel whoami --token="$VERCEL_TOKEN"
+
+      # 8. Link Vercel project
+      - name: Link Vercel project
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      # 7. Link Vercel project
-      - name: Link Vercel project
         run: |
+          if [ -z "$VERCEL_ORG_ID" ]; then
+            echo "ERROR: VERCEL_ORG_ID is missing."
+            exit 1
+          fi
+
+          if [ -z "$VERCEL_PROJECT_ID" ]; then
+            echo "ERROR: VERCEL_PROJECT_ID is missing."
+            exit 1
+          fi
+
           vercel link \
             --yes \
-            --project "$VERCEL_PROJECT_ID" \
-            --scope "$VERCEL_ORG_ID" \
-            --token "$VERCEL_TOKEN"
+            --project="$VERCEL_PROJECT_ID" \
+            --scope="$VERCEL_ORG_ID" \
+            --token="$VERCEL_TOKEN"
+
+      # 9. Pull Vercel production settings
+      - name: Pull Vercel production settings
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      # 8. Pull Vercel production settings
-      - name: Pull Vercel production settings
         run: |
           vercel pull \
             --yes \
             --environment=production \
-            --token "$VERCEL_TOKEN"
+            --token="$VERCEL_TOKEN"
+
+      # 10. Build with Vercel
+      - name: Build for production
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      # 9. Build for production using Vercel
-      - name: Build for production
         run: |
           vercel build \
             --prod \
-            --token "$VERCEL_TOKEN"
+            --token="$VERCEL_TOKEN"
+
+      # 11. Deploy to Vercel
+      - name: Deploy to Vercel
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
-
-      # 10. Deploy to Vercel
-      - name: Deploy to Vercel
         run: |
           vercel deploy \
             --prebuilt \
             --prod \
-            --token "$VERCEL_TOKEN"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+            --token="$VERCEL_TOKEN"
+```
