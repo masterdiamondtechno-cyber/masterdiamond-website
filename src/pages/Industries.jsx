@@ -1,176 +1,196 @@
 import React from 'react';
-import SectionLabel from '../components/SectionLabel';
-import Button from '../components/Button';
+import { Link } from 'react-router-dom';
+import { motion } from 'framer-motion';
+import { ArrowRight, AlertCircle, Lightbulb, CheckCircle2 } from 'lucide-react';
 import { industriesData } from '../data/industries';
 import * as LucideIcons from 'lucide-react';
-import { AlertCircle, Lightbulb, CheckCircle2 } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6 } }
+};
 
 export default function Industries() {
   return (
-    <div>
+    <div className="bg-white">
 
-      {/* HERO SECTION - EXPLICIT DEEP NAVY BACKGROUND & WHITE TEXT */}
-      <section className="section-padding" style={{ backgroundColor: '#0B2340', color: '#FFFFFF', padding: '6rem 0 5rem 0' }}>
-        <div className="container" style={{ textAlign: 'center', maxWidth: '850px' }}>
-          <SectionLabel text="SECTOR EXPERTISE" color="aqua" />
-          <h1
-            className="text-hero"
-            style={{ color: '#FFFFFF', marginBottom: '1.5rem' }}
-          >
-            Technology For Businesses <br />
-            <span className="text-highlight-aqua">Across Industries.</span>
-          </h1>
-          <p style={{ fontSize: '1.25rem', color: '#FFFFFF', opacity: 0.9, lineHeight: '1.65' }}>
-            We engineer tailored digital software solutions addressing unique operational challenges and market opportunities across 10 core business sectors.
-          </p>
+      {/* HERO */}
+      <section className="bg-[#0B2340] py-24 relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2F8FA2]/15 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#59B9B4]/10 rounded-full -translate-x-1/3 translate-y-1/3" />
+        </div>
+        <div className="max-w-[1280px] mx-auto px-6 text-center relative z-10">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }}>
+            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-5">SECTOR EXPERTISE</span>
+            <h1 className="text-[2.8rem] lg:text-[3.8rem] font-bold text-white leading-tight mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Technology For Businesses{' '}
+              <br />
+              <span className="text-[#59B9B4]">Across Industries.</span>
+            </h1>
+            <p className="text-white/85 text-[1.15rem] leading-relaxed max-w-[680px] mx-auto">
+              We engineer tailored digital software solutions addressing unique operational challenges and market opportunities across 10 core business sectors.
+            </p>
+          </motion.div>
         </div>
       </section>
 
-      {/* DETAILED 10 INDUSTRIES LIST */}
-      <section className="section-padding" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="container">
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '4.5rem' }}>
+      {/* INDUSTRY QUICK NAV */}
+      <div className="bg-white border-b border-[#DDE2E2] py-4">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="flex flex-wrap gap-2 justify-center">
+            {industriesData.map((ind) => {
+              const IconComp = LucideIcons[ind.iconName] || LucideIcons.Building;
+              return (
+                <a
+                  key={ind.id}
+                  href={`#${ind.id}`}
+                  className="flex items-center gap-1.5 text-[0.78rem] font-bold text-[#4A5568] hover:text-[#0B2340] hover:bg-[#F7F8F8] px-3.5 py-2 rounded-lg transition-all border border-[#DDE2E2] hover:border-[#2F8FA2]/40"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  <IconComp size={13} className="text-[#2F8FA2]" />
+                  {ind.title}
+                </a>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
+      {/* INDUSTRIES LIST */}
+      <section className="py-16 bg-white">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="flex flex-col gap-14">
             {industriesData.map((ind, index) => {
               const IconComponent = LucideIcons[ind.iconName] || LucideIcons.Building;
 
               return (
-                <div
+                <motion.div
                   key={ind.id}
                   id={ind.id}
-                  style={{
-                    backgroundColor: '#F7F8F8',
-                    border: '1.5px solid #DDE2E2',
-                    borderRadius: '12px',
-                    padding: '3rem',
-                    scrollMarginTop: '100px'
-                  }}
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: '-80px' }}
+                  transition={{ duration: 0.6 }}
+                  className="bg-[#F7F8F8] border border-[#DDE2E2] rounded-2xl p-8 lg:p-12 scroll-mt-24"
                 >
-                  <div className="mosaic-grid mosaic-grid-12" style={{ alignItems: 'flex-start' }}>
+                  <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
 
-                    {/* Left Side: Header & CSS Abstract Sector Illustration */}
-                    <div className="col-span-5">
-                      <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1rem' }}>
-                        <div style={{ width: '48px', height: '48px', borderRadius: '10px', backgroundColor: '#2F8FA2', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
-                          <IconComponent size={24} color="#FFFFFF" />
+                    {/* Left */}
+                    <div className="lg:col-span-4">
+                      <div className="flex items-center gap-3 mb-5">
+                        <div className="w-12 h-12 rounded-xl bg-[#2F8FA2] flex items-center justify-center flex-shrink-0">
+                          <IconComponent size={22} className="text-white" />
                         </div>
-                        <h2 style={{ fontSize: '2rem', color: '#0B2340' }}>
+                        <h2 className="text-[1.75rem] font-bold text-[#0B2340]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                           {ind.title}
                         </h2>
                       </div>
 
-                      <p style={{ fontSize: '1.05rem', color: '#4A5568', lineHeight: '1.65', marginBottom: '1.5rem' }}>
+                      <p className="text-[#4A5568] leading-relaxed mb-6 text-[1rem]">
                         {ind.overview}
                       </p>
 
-                      {/* Custom Vector CSS Diagram Representation */}
-                      <div
-                        style={{
-                          backgroundColor: '#FFFFFF',
-                          border: '1px solid #DDE2E2',
-                          borderRadius: '8px',
-                          padding: '1.5rem',
-                          display: 'flex',
-                          alignItems: 'center',
-                          justify: 'space-around',
-                          marginBottom: '1.5rem'
-                        }}
+                      {/* Visual Flow */}
+                      <div className="bg-white border border-[#DDE2E2] rounded-xl p-4 flex items-center gap-3 mb-6">
+                        {['Data Node', 'Cloud Hub', 'User App'].map((node, ni) => (
+                          <React.Fragment key={ni}>
+                            <div className="text-center">
+                              <div
+                                className={`w-9 h-9 rounded-full flex items-center justify-center mx-auto mb-1 text-[0.72rem] font-bold ${
+                                  ni === 0 ? 'bg-[#2F8FA2]/15 text-[#2F8FA2]' :
+                                  ni === 1 ? 'bg-[#59B9B4]/20 text-[#0B2340]' :
+                                  'bg-[#0B2340] text-white'
+                                }`}
+                              >
+                                {`0${ni+1}`}
+                              </div>
+                              <span className="text-[0.72rem] font-semibold text-[#0B2340]">{node}</span>
+                            </div>
+                            {ni < 2 && <div className="flex-1 h-[2px] bg-[#59B9B4]" />}
+                          </React.Fragment>
+                        ))}
+                      </div>
+
+                      <Link
+                        to="/contact"
+                        className="inline-flex items-center gap-2 bg-[#2F8FA2] hover:bg-[#0B2340] text-white px-6 py-3 rounded-xl font-bold text-sm transition-all"
+                        style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                       >
-                        <div style={{ textAlign: 'center' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(47,143,162,0.1)', display: 'grid', placeItems: 'center', margin: '0 auto 0.4rem auto' }}>
-                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#2F8FA2' }}>01</span>
-                          </div>
-                          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#0B2340' }}>Data Node</span>
-                        </div>
-                        <div style={{ height: '2px', width: '40px', backgroundColor: '#59B9B4' }} />
-                        <div style={{ textAlign: 'center' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: 'rgba(89,185,180,0.2)', display: 'grid', placeItems: 'center', margin: '0 auto 0.4rem auto' }}>
-                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#0B2340' }}>02</span>
-                          </div>
-                          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#0B2340' }}>Cloud Hub</span>
-                        </div>
-                        <div style={{ height: '2px', width: '40px', backgroundColor: '#59B9B4' }} />
-                        <div style={{ textAlign: 'center' }}>
-                          <div style={{ width: '36px', height: '36px', borderRadius: '50%', backgroundColor: '#0B2340', display: 'grid', placeItems: 'center', margin: '0 auto 0.4rem auto' }}>
-                            <span style={{ fontSize: '0.75rem', fontWeight: '700', color: '#FFFFFF' }}>03</span>
-                          </div>
-                          <span style={{ fontSize: '0.75rem', fontWeight: '600', color: '#0B2340' }}>User App</span>
-                        </div>
-                      </div>
-
-                      <Button to="/contact" variant="teal" size="md">
-                        Inquire For {ind.title}
-                      </Button>
+                        Inquire for {ind.title} <ArrowRight size={15} />
+                      </Link>
                     </div>
 
-                    {/* Right Side: Challenges, Opportunities, Solutions */}
-                    <div className="col-span-7">
-                      <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
+                    {/* Right: Challenges, Opportunities, Solutions */}
+                    <div className="lg:col-span-8 flex flex-col gap-4">
 
-                        {/* Challenges */}
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '1.5rem', borderRadius: '8px', border: '1px solid #DDE2E2' }}>
-                          <h4 style={{ fontSize: '0.95rem', color: '#C53030', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700' }}>
-                            <AlertCircle size={16} /> Industry Challenges
-                          </h4>
-                          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                            {ind.challenges.map((item, i) => (
-                              <li key={i} style={{ fontSize: '0.875rem', color: '#4A5568' }}>• {item}</li>
-                            ))}
-                          </ul>
+                      <div className="bg-white border border-[#DDE2E2] rounded-xl p-5">
+                        <h4 className="text-sm font-bold text-red-600 uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <AlertCircle size={14} /> Industry Challenges
+                        </h4>
+                        <ul className="flex flex-col gap-2">
+                          {ind.challenges.map((item, i) => (
+                            <li key={i} className="text-sm text-[#4A5568]">• {item}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="bg-white border border-[#DDE2E2] rounded-xl p-5">
+                        <h4 className="text-sm font-bold text-[#2F8FA2] uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <Lightbulb size={14} /> Digital Opportunities
+                        </h4>
+                        <ul className="flex flex-col gap-2">
+                          {ind.opportunities.map((item, i) => (
+                            <li key={i} className="text-sm text-[#4A5568]">• {item}</li>
+                          ))}
+                        </ul>
+                      </div>
+
+                      <div className="bg-white border border-[#DDE2E2] rounded-xl p-5">
+                        <h4 className="text-sm font-bold text-[#0B2340] uppercase tracking-wider mb-3 flex items-center gap-2">
+                          <CheckCircle2 size={14} className="text-[#2F8FA2]" /> Digital Solutions We Build
+                        </h4>
+                        <div className="flex flex-wrap gap-2">
+                          {ind.solutions.map((item, i) => (
+                            <span
+                              key={i}
+                              className="text-[0.78rem] font-semibold bg-[#F7F8F8] border border-[#DDE2E2] text-[#0B2340] px-3 py-1.5 rounded-lg"
+                            >
+                              {item}
+                            </span>
+                          ))}
                         </div>
-
-                        {/* Opportunities */}
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '1.5rem', borderRadius: '8px', border: '1px solid #DDE2E2' }}>
-                          <h4 style={{ fontSize: '0.95rem', color: '#2F8FA2', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700' }}>
-                            <Lightbulb size={16} /> Digital Opportunities
-                          </h4>
-                          <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                            {ind.opportunities.map((item, i) => (
-                              <li key={i} style={{ fontSize: '0.875rem', color: '#4A5568' }}>• {item}</li>
-                            ))}
-                          </ul>
-                        </div>
-
-                        {/* Solutions */}
-                        <div style={{ backgroundColor: '#FFFFFF', padding: '1.5rem', borderRadius: '8px', border: '1px solid #DDE2E2' }}>
-                          <h4 style={{ fontSize: '0.95rem', color: '#0B2340', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.75rem', display: 'flex', alignItems: 'center', gap: '0.5rem', fontWeight: '700' }}>
-                            <CheckCircle2 size={16} color="#2F8FA2" /> Digital Solutions We Build
-                          </h4>
-                          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.5rem' }}>
-                            {ind.solutions.map((item, i) => (
-                              <span key={i} style={{ fontSize: '0.8rem', padding: '0.3rem 0.75rem', backgroundColor: '#F7F8F8', border: '1px solid #DDE2E2', borderRadius: '4px', color: '#0B2340', fontWeight: '600' }}>
-                                {item}
-                              </span>
-                            ))}
-                          </div>
-                        </div>
-
                       </div>
                     </div>
-
                   </div>
-                </div>
+                </motion.div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* FINAL INDUSTRIES CTA */}
-      <section className="section-padding" style={{ backgroundColor: '#0B2340', color: '#FFFFFF', textAlign: 'center' }}>
-        <div className="container" style={{ maxWidth: '750px' }}>
-          <SectionLabel text="ENTERPRISE CONSULTING" color="aqua" />
-          <h2 className="text-display" style={{ color: '#FFFFFF', marginBottom: '1.25rem' }}>
-            Transforming Your Industry Sector
-          </h2>
-          <p style={{ fontSize: '1.1rem', color: '#FFFFFF', opacity: 0.9, marginBottom: '2rem' }}>
-            Partner with MASTER DIAMOND to engineer custom digital platforms engineered for your domain.
-          </p>
-          <Button to="/contact" variant="aqua" size="lg">
-            Discuss Sector Goals →
-          </Button>
+      {/* CTA */}
+      <section className="py-20 bg-[#0B2340] text-center">
+        <div className="max-w-[700px] mx-auto px-6">
+          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
+            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">ENTERPRISE CONSULTING</span>
+            <h2 className="text-[2.2rem] font-bold text-white mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Transforming Your Industry Sector
+            </h2>
+            <p className="text-white/80 mb-8">
+              Partner with MASTER DIAMOND to engineer custom digital platforms engineered for your domain.
+            </p>
+            <Link
+              to="/contact"
+              className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Discuss Sector Goals <ArrowRight size={17} />
+            </Link>
+          </motion.div>
         </div>
       </section>
-
     </div>
   );
 }
