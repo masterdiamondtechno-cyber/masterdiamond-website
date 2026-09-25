@@ -9,6 +9,8 @@ import About from './pages/About';
 import Services from './pages/Services';
 import Industries from './pages/Industries';
 import Process from './pages/Process';
+import Technologies from './pages/Technologies';
+import Portfolio from './pages/Portfolio';
 import Contact from './pages/Contact';
 import NotFound from './pages/NotFound';
 
@@ -16,15 +18,17 @@ export default function App() {
   return (
     <Router>
       <ScrollToTop />
-      <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
+      <div className="flex flex-col min-h-screen">
         <Navbar />
-        <main style={{ flex: 1 }}>
+        <main className="flex-1">
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/about" element={<About />} />
             <Route path="/services" element={<Services />} />
             <Route path="/industries" element={<Industries />} />
             <Route path="/process" element={<Process />} />
+            <Route path="/technologies" element={<Technologies />} />
+            <Route path="/portfolio" element={<Portfolio />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="*" element={<NotFound />} />
           </Routes>

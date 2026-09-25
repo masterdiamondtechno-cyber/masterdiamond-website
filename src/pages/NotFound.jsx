@@ -1,96 +1,34 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
+import { Home } from 'lucide-react';
 import { motion } from 'framer-motion';
-import Button from '../components/Button';
-import SectionLabel from '../components/SectionLabel';
 
 export default function NotFound() {
   return (
-    <div
-      style={{
-        minHeight: '80vh',
-        display: 'flex',
-        alignItems: 'center',
-        justify: 'center',
-        padding: '4rem 1.5rem',
-        backgroundColor: 'var(--color-bg)',
-        textAlign: 'center'
-      }}
-    >
-      <div style={{ maxWidth: '600px' }}>
-        <SectionLabel text="ERROR 404" color="teal" />
-
-        {/* Animated Geometric Diamond Network Visual */}
-        <div style={{ position: 'relative', width: '160px', height: '160px', margin: '0 auto 2rem auto' }}>
-          <motion.svg
-            viewBox="0 0 100 100"
-            style={{ width: '100%', height: '100%' }}
-            animate={{ rotate: 360 }}
-            transition={{ duration: 30, repeat: Infinity, ease: 'linear' }}
-          >
-            <polygon
-              points="50,10 90,35 75,85 25,85 10,35"
-              fill="none"
-              stroke="var(--color-teal)"
-              strokeWidth="2"
-            />
-            <polygon
-              points="50,10 75,85 10,35"
-              fill="none"
-              stroke="var(--color-aqua)"
-              strokeWidth="1.5"
-            />
-            <polygon
-              points="50,10 90,35 25,85"
-              fill="none"
-              stroke="var(--color-navy)"
-              strokeWidth="1.5"
-            />
-            <circle cx="50" cy="10" r="4" fill="var(--color-teal)" />
-            <circle cx="90" cy="35" r="4" fill="var(--color-aqua)" />
-            <circle cx="75" cy="85" r="4" fill="var(--color-navy)" />
-            <circle cx="25" cy="85" r="4" fill="var(--color-teal)" />
-            <circle cx="10" cy="35" r="4" fill="var(--color-aqua)" />
-          </motion.svg>
-        </div>
-
-        <h1
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: ' clamp(3.5rem, 8vw, 6rem)',
-            fontWeight: '700',
-            color: 'var(--color-navy)',
-            lineHeight: '1',
-            marginBottom: '0.5rem'
-          }}
-        >
+    <div className="bg-white min-h-[80vh] flex flex-col items-center justify-center py-20 px-6 text-center">
+      <motion.div
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.5 }}
+        className="max-w-md w-full"
+      >
+        <div className="text-[6rem] lg:text-[8rem] font-bold text-[#0B2340] leading-none mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
           404
-        </h1>
-
-        <h2
-          style={{
-            fontFamily: 'var(--font-heading)',
-            fontSize: '1.75rem',
-            color: 'var(--color-navy)',
-            marginBottom: '1rem'
-          }}
-        >
-          PAGE NOT FOUND
-        </h2>
-
-        <p
-          style={{
-            fontSize: '1.1rem',
-            color: 'var(--color-text)',
-            marginBottom: '2rem'
-          }}
-        >
-          Looks like this digital path doesn't exist.
+        </div>
+        <div className="text-[1.5rem] font-bold text-[#2F8FA2] mb-6" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+          Page Not Found
+        </div>
+        <p className="text-[#4A5568] leading-relaxed mb-8">
+          The page you are looking for might have been removed, had its name changed, or is temporarily unavailable.
         </p>
-
-        <Button to="/" variant="teal" size="lg">
-          Back to Home →
-        </Button>
-      </div>
+        <Link
+          to="/"
+          className="inline-flex items-center justify-center gap-2 bg-[#0B2340] hover:bg-[#2F8FA2] text-white px-8 py-3.5 rounded-xl font-bold transition-all duration-300 w-full sm:w-auto"
+          style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+        >
+          <Home size={18} /> Back to Homepage
+        </Link>
+      </motion.div>
     </div>
   );
 }

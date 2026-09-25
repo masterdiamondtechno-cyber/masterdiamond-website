@@ -1,570 +1,690 @@
-import React from 'react';
-import SectionLabel from '../components/SectionLabel';
-import SectionHeading from '../components/SectionHeading';
-import Button from '../components/Button';
-import HeroTechComposition from '../components/HeroTechComposition';
-import AnimatedCounter from '../components/AnimatedCounter';
-import ServiceCard from '../components/ServiceCard';
-import IndustryCard from '../components/IndustryCard';
-import TechCategory from '../components/TechCategory';
-import AccordionItem from '../components/AccordionItem';
-import ProcessTimeline from '../components/ProcessTimeline';
-import MosaicBlock from '../components/MosaicBlock';
-
+import React, { useState, useEffect, useRef } from 'react';
+import { Link } from 'react-router-dom';
+import { motion, useInView } from 'framer-motion';
+import {
+  ArrowRight, CheckCircle2, Globe, Smartphone, Code, Brain, Cpu, Cloud,
+  TrendingUp, Search, ShieldCheck, Layout, Star, Quote, ChevronDown,
+  Zap, Target, Users, Award
+} from 'lucide-react';
 import { servicesData } from '../data/services';
 import { industriesData } from '../data/industries';
-import { technologyCategories } from '../data/technologies';
-import { testimonialsData } from '../data/testimonials';
-import { capabilitiesData } from '../data/capabilities';
-import { faqData } from '../data/faq';
 import * as LucideIcons from 'lucide-react';
-import { ArrowRight, CheckCircle2, Cpu, Check } from 'lucide-react';
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 40 },
+  visible: { opacity: 1, y: 0 }
+};
+
+const stagger = {
+  visible: { transition: { staggerChildren: 0.1 } }
+};
+
+function AnimatedCounter({ target, suffix = '' }) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const inView = useInView(ref, { once: true });
+
+  useEffect(() => {
+    if (!inView) return;
+    let start = 0;
+    const end = parseInt(target);
+    const duration = 1800;
+    const step = Math.ceil(end / (duration / 16));
+    const timer = setInterval(() => {
+      start += step;
+      if (start >= end) { setCount(end); clearInterval(timer); }
+      else setCount(start);
+    }, 16);
+    return () => clearInterval(timer);
+  }, [inView, target]);
+
+  return <span ref={ref}>{count}{suffix}</span>;
+}
+
+const stats = [
+  { value: 10, suffix: '+', label: 'Projects Delivered', desc: 'Web, mobile & enterprise solutions', icon: Zap, color: 'bg-[#0B2340] text-white' },
+  { value: 12, suffix: '+', label: 'Technologies', desc: 'React, Node, Python, AWS & more', icon: Code, color: 'bg-[#2F8FA2] text-white' },
+  { value: 8, suffix: '', label: 'Digital Services', desc: 'Full-spectrum software solutions', icon: Target, color: 'bg-[#59B9B4] text-[#0B2340]' },
+  { value: 5, suffix: '+', label: 'Industries Served', desc: 'Healthcare to Fintech & beyond', icon: Award, color: 'bg-[#F7F8F8] text-[#0B2340] border border-[#DDE2E2]' },
+];
+
+const serviceHighlights = servicesData.slice(0, 6);
+
+const testimonials = [
+  {
+    quote: "MASTER DIAMOND delivered a full-stack IoT telemetry platform for our smart agriculture network ahead of schedule. The code quality and documentation were exceptional.",
+    author: "Rajesh Kulkarni",
+    role: "CTO",
+    company: "AgriSense Technologies",
+    rating: 5
+  },
+  {
+    quote: "Their React web app for our clinic improved patient booking efficiency by 60%. Professional team, great communication throughout.",
+    author: "Dr. Priya Mehta",
+    role: "Director",
+    company: "HealthBridge Clinic",
+    rating: 5
+  },
+  {
+    quote: "We needed a cross-platform mobile app fast. MASTER DIAMOND delivered a polished React Native solution in 8 weeks that users absolutely love.",
+    author: "Sunil Pawar",
+    role: "Founder",
+    company: "RetailEdge India",
+    rating: 5
+  }
+];
+
+const whyUs = [
+  { num: '01', title: 'UNDERSTAND', desc: 'Deep-dive into your business goals, user needs, and technical requirements before writing a single line of code.', points: ['Business alignment sessions', 'User requirement audit'] },
+  { num: '02', title: 'CREATE', desc: 'Transform ideas into intuitive digital experiences with clean, modular architecture and minimal UX design principles.', points: ['Swiss minimal UI/UX', 'Modular React frontend'] },
+  { num: '03', title: 'SCALE', desc: 'Build resilient cloud solutions designed to scale effortlessly as your business grows and user numbers increase.', points: ['AWS microservices', 'High-concurrency DB'] },
+  { num: '04', title: 'SUPPORT', desc: 'Stay connected long past launch with proactive monitoring, security patches, and continuous feature evolution.', points: ['24/7 telemetry SLA', 'Continuous security patches'] },
+];
+
+const quickIndustries = industriesData.slice(0, 6);
 
 export default function Home() {
   return (
-    <div>
+    <div className="bg-white">
 
-      {/* SECTION 1: HERO SECTION */}
-      <section className="section-padding" style={{ backgroundColor: '#F7F8F8', paddingTop: '3.5rem', paddingBottom: '4rem', overflow: 'hidden' }}>
-        <div className="container">
-          <div className="mosaic-grid mosaic-grid-12" style={{ alignItems: 'center' }}>
+      {/* ===== HERO SECTION ===== */}
+      <section className="relative bg-[#F7F8F8] overflow-hidden py-20 lg:py-28">
+        {/* Background decoration */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-gradient-radial from-[#2F8FA2]/10 to-transparent rounded-full translate-x-1/3 -translate-y-1/4" />
+          <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-gradient-radial from-[#59B9B4]/8 to-transparent rounded-full -translate-x-1/3 translate-y-1/4" />
+        </div>
 
-            {/* Left Content Column */}
-            <div className="col-span-6">
-              <SectionLabel text="DIGITAL SOLUTIONS • PUNE, INDIA" color="teal" />
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
 
-              <h1
-                className="text-hero"
-                style={{ marginBottom: '1.5rem', color: '#0B2340' }}
+            {/* Left Content */}
+            <motion.div
+              initial="hidden"
+              animate="visible"
+              variants={stagger}
+            >
+              <motion.div variants={fadeUp}>
+                <span className="inline-flex items-center gap-2 text-[0.75rem] font-bold tracking-[0.12em] text-[#2F8FA2] uppercase bg-[#2F8FA2]/10 px-3.5 py-1.5 rounded-full mb-6">
+                  <span className="w-1.5 h-1.5 bg-[#2F8FA2] rounded-full animate-pulse" />
+                  DIGITAL SOLUTIONS • PUNE, INDIA
+                </span>
+              </motion.div>
+
+              <motion.h1
+                variants={fadeUp}
+                className="text-[2.6rem] lg:text-[3.5rem] xl:text-[4rem] font-bold leading-[1.12] text-[#0B2340] mb-6"
+                style={{ fontFamily: "'Space Grotesk', sans-serif", letterSpacing: '-0.02em' }}
               >
                 We Build{' '}
-                <span className="text-highlight-teal">Digital Solutions</span>{' '}
-                That Move Businesses Forward.
-              </h1>
+                <span className="relative">
+                  <span className="text-[#2F8FA2]">Digital Solutions</span>
+                  <svg className="absolute -bottom-2 left-0 w-full" viewBox="0 0 300 12" fill="none">
+                    <path d="M2 8C50 4 100 2 150 6C200 10 250 4 298 6" stroke="#59B9B4" strokeWidth="3" strokeLinecap="round"/>
+                  </svg>
+                </span>
+                {' '}That Move Businesses Forward.
+              </motion.h1>
 
-              <p style={{ fontSize: '1.2rem', lineHeight: '1.65', color: '#4A5568', marginBottom: '2rem', maxWidth: '560px' }}>
-                MASTER DIAMOND helps businesses turn ideas into powerful digital experiences through web development, mobile applications, software solutions, IoT, AI and digital technologies.
-              </p>
+              <motion.p variants={fadeUp} className="text-[1.1rem] text-[#4A5568] leading-relaxed mb-8 max-w-[520px]">
+                MASTER DIAMOND helps businesses turn ideas into powerful digital experiences — through web development, mobile apps, custom software, IoT, AI and cloud technologies.
+              </motion.p>
 
-              {/* Key Highlights Pill Row */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.6rem', marginBottom: '2.25rem' }}>
-                {['React & Web Apps', 'iOS & Android Native', 'Cloud & IoT Telemetry', 'AI Machine Learning'].map((item, idx) => (
+              {/* Tech Pills */}
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-2.5 mb-9">
+                {['React & Web Apps', 'iOS & Android', 'Cloud & IoT', 'AI & Machine Learning'].map((item, idx) => (
                   <span
                     key={idx}
-                    style={{
-                      fontSize: '0.85rem',
-                      fontWeight: '600',
-                      color: '#0B2340',
-                      backgroundColor: '#FFFFFF',
-                      border: '1.5px solid #DDE2E2',
-                      padding: '0.4rem 0.85rem',
-                      borderRadius: '4px',
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      gap: '0.4rem'
-                    }}
+                    className="flex items-center gap-1.5 text-[0.82rem] font-semibold text-[#0B2340] bg-white border border-[#DDE2E2] px-3.5 py-2 rounded-md shadow-sm"
+                    style={{ fontFamily: "'Inter', sans-serif" }}
                   >
-                    <CheckCircle2 size={14} color="#2F8FA2" />
+                    <CheckCircle2 size={13} className="text-[#2F8FA2]" />
                     {item}
                   </span>
                 ))}
-              </div>
+              </motion.div>
 
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '1rem' }}>
-                <Button to="/services" variant="teal" size="lg">
+              <motion.div variants={fadeUp} className="flex flex-wrap gap-4">
+                <Link
+                  to="/services"
+                  className="inline-flex items-center gap-2 bg-[#0B2340] hover:bg-[#2F8FA2] text-white px-7 py-3.5 rounded-xl font-bold text-[0.95rem] transition-all duration-200 hover:shadow-xl hover:shadow-[#2F8FA2]/30 hover:-translate-y-0.5"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
                   Explore Services
-                </Button>
-                <Button to="/contact" variant="outline" size="lg">
+                  <ArrowRight size={17} />
+                </Link>
+                <Link
+                  to="/contact"
+                  className="inline-flex items-center gap-2 border-2 border-[#0B2340] text-[#0B2340] hover:bg-[#0B2340] hover:text-white px-7 py-3.5 rounded-xl font-bold text-[0.95rem] transition-all duration-200 hover:-translate-y-0.5"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
                   Start a Project
-                </Button>
-              </div>
-            </div>
+                </Link>
+              </motion.div>
 
-            {/* Right Interactive Tech Composition */}
-            <div className="col-span-6">
-              <HeroTechComposition />
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 2: QUICK INTRODUCTION (WHO WE ARE) */}
-      <section className="section-padding border-thin" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="container">
-          <SectionLabel text="WHO WE ARE" color="navy" />
-
-          <div className="mosaic-grid mosaic-grid-12" style={{ alignItems: 'stretch' }}>
-            <div className="col-span-5" style={{ display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-              <div>
-                <SectionHeading
-                  title="Technology Built Around Your Business."
-                  subtitle="MASTER DIAMOND combines software development, design and emerging technologies to help businesses transform ideas into practical digital experiences."
-                />
-                <p style={{ fontSize: '1.05rem', color: '#4A5568', lineHeight: '1.65', marginBottom: '2rem' }}>
-                  Whether you require an enterprise web portal, a scalable mobile application, or custom IoT telemetry, we bring engineering precision and user-first principles to every line of code.
-                </p>
-              </div>
-              <div>
-                <Button to="/about" variant="primary" size="md">
-                  Explore MASTER DIAMOND
-                </Button>
-              </div>
-            </div>
-
-            <div className="col-span-7">
-              <div className="mosaic-grid mosaic-grid-2">
-                <MosaicBlock bg="navy">
-                  <div style={{ fontSize: '0.75rem', color: '#59B9B4', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '0.75rem', fontWeight: '700' }}>
-                    ENGINEERING MANDATE
-                  </div>
-                  <h4 style={{ fontSize: '1.25rem', color: '#FFFFFF', marginBottom: '0.75rem', fontWeight: '700' }}>
-                    Precision Architecture
-                  </h4>
-                  <p style={{ fontSize: '0.925rem', color: '#FFFFFF', opacity: 0.9, lineHeight: '1.6', marginBottom: '1rem' }}>
-                    Every software product is engineered for zero-latency execution, multi-device responsiveness, and cloud scalability.
-                  </p>
-                  <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.85rem', color: '#59B9B4', fontWeight: '600' }}>
-                    <li>✓ Clean modular React & Node architecture</li>
-                    <li>✓ 99.99% high availability cloud setups</li>
-                  </ul>
-                </MosaicBlock>
-
-                <MosaicBlock bg="light-gray">
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', marginBottom: '0.75rem' }}>
-                    <Cpu size={24} color="#2F8FA2" />
-                    <h4 style={{ fontSize: '1.2rem', color: '#0B2340', fontWeight: '700' }}>Emerging Tech</h4>
-                  </div>
-                  <p style={{ fontSize: '0.925rem', color: '#0B2340', lineHeight: '1.6', marginBottom: '1rem' }}>
-                    Seamless integration of IoT sensor telemetry, custom AI algorithms, and automated pipeline triggers.
-                  </p>
-                  <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: '0.35rem', fontSize: '0.85rem', color: '#0B2340', fontWeight: '600' }}>
-                    <li>✓ Machine learning model integration</li>
-                    <li>✓ Hardware telemetry & sensor processing</li>
-                  </ul>
-                </MosaicBlock>
-
-                <MosaicBlock bg="teal" gridSpan="col-span-2">
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '1rem' }}>
-                    <div>
-                      <div style={{ fontSize: '0.75rem', color: '#FFFFFF', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: '700', marginBottom: '0.3rem' }}>
-                        AGILE EXECUTION
-                      </div>
-                      <h4 style={{ fontSize: '1.2rem', color: '#FFFFFF', fontWeight: '700' }}>
-                        Transparent 2-Week Sprint Deliverables
-                      </h4>
-                      <p style={{ fontSize: '0.9rem', color: '#FFFFFF', opacity: 0.95, marginTop: '0.2rem' }}>
-                        Continuous demos, code audits, and milestone tracking for total peace of mind.
-                      </p>
-                    </div>
-                    <Button to="/process" variant="aqua" size="sm">
-                      View Process Roadmap
-                    </Button>
-                  </div>
-                </MosaicBlock>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 3: ANIMATED STATISTICS */}
-      <section className="section-padding" style={{ backgroundColor: '#F7F8F8' }}>
-        <div className="container">
-          <div className="mosaic-grid mosaic-grid-4">
-
-            {/* Stat 1: Navy block */}
-            <MosaicBlock bg="navy">
-              <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3.5rem', fontWeight: '700', color: '#FFFFFF', lineHeight: 1, marginBottom: '0.5rem' }}>
-                <AnimatedCounter value="10+" />
-              </div>
-              <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#59B9B4' }}>
-                Projects Delivered
-              </div>
-              <p style={{ fontSize: '0.9rem', color: '#FFFFFF', opacity: 0.9, marginTop: '0.5rem', lineHeight: '1.5' }}>
-                Web platforms, mobile apps, and enterprise software engineered for business efficiency.
-              </p>
-            </MosaicBlock>
-
-            {/* Stat 2: Teal block */}
-            <MosaicBlock bg="teal">
-              <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3.5rem', fontWeight: '700', color: '#FFFFFF', lineHeight: 1, marginBottom: '0.5rem' }}>
-                <AnimatedCounter value="12+" />
-              </div>
-              <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#FFFFFF' }}>
-                Technologies
-              </div>
-              <p style={{ fontSize: '0.9rem', color: '#FFFFFF', opacity: 0.95, marginTop: '0.5rem', lineHeight: '1.5' }}>
-                React, Java, Python, Node.js, AWS, Docker, IoT, and AI frameworks.
-              </p>
-            </MosaicBlock>
-
-            {/* Stat 3: Aqua block */}
-            <MosaicBlock bg="aqua">
-              <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3.5rem', fontWeight: '700', color: '#0B2340', lineHeight: 1, marginBottom: '0.5rem' }}>
-                <AnimatedCounter value="08" />
-              </div>
-              <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#0B2340' }}>
-                Digital Services
-              </div>
-              <p style={{ fontSize: '0.9rem', color: '#0B2340', marginTop: '0.5rem', fontWeight: '500', lineHeight: '1.5' }}>
-                Full-spectrum software solutions from UX research to cloud SLA maintenance.
-              </p>
-            </MosaicBlock>
-
-            {/* Stat 4: White block */}
-            <MosaicBlock bg="white">
-              <div style={{ fontFamily: 'var(--font-heading)', fontSize: '3.5rem', fontWeight: '700', color: '#0B2340', lineHeight: 1, marginBottom: '0.5rem' }}>
-                <AnimatedCounter value="05+" />
-              </div>
-              <div style={{ fontSize: '1.1rem', fontWeight: '700', color: '#2F8FA2' }}>
-                Industries
-              </div>
-              <p style={{ fontSize: '0.9rem', color: '#0B2340', marginTop: '0.5rem', lineHeight: '1.5' }}>
-                Healthcare, Agriculture, Retail, E-Commerce, Real Estate, and Finance.
-              </p>
-            </MosaicBlock>
-
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 4: SERVICES MOSAIC */}
-      <section className="section-padding" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="container">
-          <SectionLabel text="WHAT WE DO" color="teal" />
-          <SectionHeading
-            title="Technology Solutions Built Around Your Goals."
-            subtitle="Explore our 10 core technology service capabilities designed to drive business efficiency and digital transformation."
-          />
-
-          <div className="mosaic-grid mosaic-grid-12">
-            {servicesData.map((service, index) => (
-              <ServiceCard key={service.id} service={service} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 5: TECHNOLOGY SHOWCASE */}
-      <section className="section-padding border-thin" style={{ backgroundColor: '#F7F8F8' }}>
-        <div className="container">
-          <SectionLabel text="OUR TECH STACK" color="navy" />
-          <SectionHeading
-            title="Technology We Work With"
-            subtitle="We select battle-tested frameworks, robust backend logic, and scalable cloud platforms tailored to project demands."
-          />
-
-          {technologyCategories.map((cat, idx) => (
-            <TechCategory key={idx} categoryData={cat} categoryIndex={idx} />
-          ))}
-        </div>
-      </section>
-
-      {/* SECTION 6: ABOUT PREVIEW - DEEP NAVY BACKGROUND EXPLICIT */}
-      <section className="section-padding" style={{ backgroundColor: '#0B2340', color: '#FFFFFF' }}>
-        <div className="container">
-          <div className="mosaic-grid mosaic-grid-12" style={{ alignItems: 'center' }}>
-            <div className="col-span-7">
-              <SectionLabel text="ABOUT MASTER DIAMOND" color="aqua" />
-              <h2 className="text-display" style={{ color: '#FFFFFF', marginBottom: '1.5rem' }}>
-                We Don't Just Build Software. <br />
-                <span className="text-highlight-aqua">We Build Possibilities.</span>
-              </h2>
-
-              <p style={{ fontSize: '1.1rem', color: '#FFFFFF', opacity: 0.9, marginBottom: '1.25rem', lineHeight: '1.65' }}>
-                MASTER DIAMOND is a technology solutions company focused on helping businesses embrace digital transformation.
-              </p>
-              <p style={{ fontSize: '1rem', color: '#FFFFFF', opacity: 0.85, marginBottom: '2rem', lineHeight: '1.65' }}>
-                We bring together development, design and emerging technologies to create digital products that are easy to use, scalable and aligned with business objectives.
-              </p>
-
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem', marginBottom: '2.5rem', borderTop: '1px solid rgba(255,255,255,0.2)', paddingTop: '1.5rem' }}>
-                <div>
-                  <h4 style={{ fontSize: '1rem', color: '#59B9B4', marginBottom: '0.35rem', fontWeight: '700' }}>Who We Are</h4>
-                  <p style={{ fontSize: '0.85rem', color: '#FFFFFF', opacity: 0.85 }}>Tech innovators & software engineers.</p>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '1rem', color: '#59B9B4', marginBottom: '0.35rem', fontWeight: '700' }}>What We Believe</h4>
-                  <p style={{ fontSize: '0.85rem', color: '#FFFFFF', opacity: 0.85 }}>Technology must deliver real value.</p>
-                </div>
-                <div>
-                  <h4 style={{ fontSize: '1rem', color: '#59B9B4', marginBottom: '0.35rem', fontWeight: '700' }}>How We Work</h4>
-                  <p style={{ fontSize: '0.85rem', color: '#FFFFFF', opacity: 0.85 }}>Agile, transparent, & goal-oriented.</p>
-                </div>
-              </div>
-
-              <Button to="/about" variant="aqua" size="lg">
-                Discover Our Story
-              </Button>
-            </div>
-
-            {/* Visual Vector Artwork Beside Text */}
-            <div className="col-span-5">
-              <div
-                style={{
-                  backgroundColor: 'rgba(255, 255, 255, 0.08)',
-                  border: '1.5px solid rgba(255, 255, 255, 0.25)',
-                  borderRadius: '16px',
-                  padding: '2.5rem',
-                  textAlign: 'center',
-                  position: 'relative',
-                  overflow: 'hidden'
-                }}
-              >
-                <div style={{ width: '110px', margin: '0 auto 1.5rem auto' }}>
-                  <img
-                    src="/logo.png"
-                    alt="MASTER DIAMOND"
-                    style={{ height: '80px', width: 'auto', margin: '0 auto', filter: 'brightness(0) invert(1)' }}
-                  />
-                </div>
-                <h3 style={{ fontSize: '1.5rem', color: '#FFFFFF', marginBottom: '0.75rem', fontWeight: '700' }}>
-                  MASTER DIAMOND
-                </h3>
-                <p style={{ fontSize: '0.95rem', color: '#59B9B4', marginBottom: '1.5rem', fontWeight: '700' }}>
-                  Expertly Crafted Technology That Shines
-                </p>
-                <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '0.5rem' }}>
-                  <span style={{ padding: '0.35rem 0.85rem', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.15)', fontSize: '0.75rem', color: '#FFFFFF', fontWeight: '600' }}>Web Platforms</span>
-                  <span style={{ padding: '0.35rem 0.85rem', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.15)', fontSize: '0.75rem', color: '#FFFFFF', fontWeight: '600' }}>Mobile Apps</span>
-                  <span style={{ padding: '0.35rem 0.85rem', borderRadius: '20px', backgroundColor: 'rgba(255,255,255,0.15)', fontSize: '0.75rem', color: '#FFFFFF', fontWeight: '600' }}>AI & IoT</span>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* SECTION 7: WHY MASTER DIAMOND */}
-      <section className="section-padding" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="container">
-          <SectionLabel text="WHY MASTER DIAMOND" color="teal" />
-          <SectionHeading
-            title="Technology With a Purpose."
-            subtitle="Our four-part execution strategy ensures every digital initiative generates measurable business outcome."
-          />
-
-          <div className="mosaic-grid mosaic-grid-4">
-            {[
-              {
-                num: '01',
-                title: 'UNDERSTAND',
-                desc: 'We understand your business goals, target audience, and workflows before writing code.',
-                points: ['Business alignment', 'User requirement audit']
-              },
-              {
-                num: '02',
-                title: 'CREATE',
-                desc: 'We transform ideas into intuitive digital experiences and high-speed software architectures.',
-                points: ['Swiss minimal UX', 'Modular React frontend']
-              },
-              {
-                num: '03',
-                title: 'SCALE',
-                desc: 'We build resilient cloud solutions designed to scale effortlessly as your business grows.',
-                points: ['AWS microservices', 'High-concurrency DB']
-              },
-              {
-                num: '04',
-                title: 'SUPPORT',
-                desc: 'We stay connected long past launch day to optimize uptime, security, and feature evolution.',
-                points: ['24/7 telemetry SLA', 'Continuous security patches']
-              }
-            ].map((item, idx) => (
-              <div
-                key={idx}
-                style={{
-                  backgroundColor: '#F7F8F8',
-                  border: '1.5px solid #DDE2E2',
-                  padding: '2rem',
-                  borderRadius: '8px',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  justify: 'space-between'
-                }}
-              >
-                <div>
-                  <div style={{ fontFamily: 'var(--font-heading)', fontSize: '2.25rem', fontWeight: '700', color: '#2F8FA2', marginBottom: '0.75rem' }}>
-                    {item.num}
-                  </div>
-                  <h3 style={{ fontSize: '1.3rem', fontWeight: '700', color: '#0B2340', marginBottom: '0.75rem' }}>
-                    {item.title}
-                  </h3>
-                  <p style={{ fontSize: '0.925rem', color: '#4A5568', lineHeight: '1.55', marginBottom: '1.25rem' }}>
-                    {item.desc}
-                  </p>
-                </div>
-                <div style={{ borderTop: '1px solid #DDE2E2', paddingTop: '0.85rem', display: 'flex', flexDirection: 'column', gap: '0.35rem' }}>
-                  {item.points.map((pt, pIdx) => (
-                    <div key={pIdx} style={{ fontSize: '0.825rem', color: '#0B2340', fontWeight: '600', display: 'flex', alignItems: 'center', gap: '0.4rem' }}>
-                      <Check size={13} color="#2F8FA2" />
-                      <span>{pt}</span>
+              {/* Trust signals */}
+              <motion.div variants={fadeUp} className="flex items-center gap-6 mt-10 pt-8 border-t border-[#DDE2E2]">
+                <div className="flex -space-x-2.5">
+                  {['A', 'B', 'C', 'D'].map((l, i) => (
+                    <div
+                      key={i}
+                      className="w-9 h-9 rounded-full border-2 border-white flex items-center justify-center text-xs font-bold text-white shadow-sm"
+                      style={{ backgroundColor: ['#0B2340','#2F8FA2','#59B9B4','#4A5568'][i] }}
+                    >
+                      {l}
                     </div>
                   ))}
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+                <div>
+                  <div className="flex gap-0.5 mb-0.5">
+                    {[...Array(5)].map((_, i) => <Star key={i} size={13} className="fill-amber-400 text-amber-400" />)}
+                  </div>
+                  <p className="text-xs text-[#4A5568] font-medium">Trusted by businesses across India</p>
+                </div>
+              </motion.div>
+            </motion.div>
 
-      {/* SECTION 8: INDUSTRIES */}
-      <section className="section-padding border-thin" style={{ backgroundColor: '#F7F8F8' }}>
-        <div className="container">
-          <SectionLabel text="INDUSTRIES" color="navy" />
-          <SectionHeading
-            title="Digital Solutions Across Industries."
-            subtitle="Tailored digital software platforms engineered to address unique operational demands across 10 business sectors."
-          />
+            {/* Right Visual */}
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, x: 30 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.8, delay: 0.2 }}
+              className="relative"
+            >
+              {/* Floating tech composition */}
+              <div className="relative bg-white rounded-3xl border border-[#DDE2E2] shadow-2xl p-8 overflow-hidden">
+                <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-radial from-[#2F8FA2]/10 to-transparent rounded-full translate-x-1/4 -translate-y-1/4" />
 
-          <div className="mosaic-grid mosaic-grid-12">
-            {industriesData.map((ind, index) => (
-              <IndustryCard key={ind.id} industry={ind} index={index} />
-            ))}
-          </div>
-        </div>
-      </section>
+                {/* Header */}
+                <div className="flex items-center justify-between mb-8">
+                  <div className="flex gap-1.5">
+                    <div className="w-3 h-3 rounded-full bg-red-400" />
+                    <div className="w-3 h-3 rounded-full bg-amber-400" />
+                    <div className="w-3 h-3 rounded-full bg-green-400" />
+                  </div>
+                  <span className="text-xs font-mono text-[#4A5568]">masterdiamond.io</span>
+                </div>
 
-      {/* SECTION 9: CAPABILITIES (WHAT WE CAN BUILD) */}
-      <section className="section-padding" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="container">
-          <SectionLabel text="WHAT WE CAN BUILD" color="teal" />
-          <SectionHeading
-            title="Comprehensive Digital Capabilities"
-            subtitle="From enterprise web portals to connected IoT telemetry, discover what we engineer for ambitious companies."
-          />
-
-          <div className="mosaic-grid mosaic-grid-12">
-            {capabilitiesData.map((cap, idx) => {
-              const IconComp = LucideIcons[cap.iconName] || LucideIcons.Zap;
-              return (
-                <MosaicBlock key={cap.id} bg="white" gridSpan="col-span-4">
-                  <div>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '0.85rem', marginBottom: '1rem' }}>
-                      <div style={{ width: '40px', height: '40px', borderRadius: '8px', backgroundColor: 'rgba(47, 143, 162, 0.1)', display: 'grid', placeItems: 'center', flexShrink: 0 }}>
-                        <IconComp size={20} color="#2F8FA2" />
+                {/* Service Cards Mini */}
+                <div className="grid grid-cols-2 gap-3 mb-5">
+                  {[
+                    { label: 'Web Development', icon: Globe, color: '#2F8FA2' },
+                    { label: 'Mobile Apps', icon: Smartphone, color: '#0B2340' },
+                    { label: 'AI & Machine Learning', icon: Brain, color: '#59B9B4' },
+                    { label: 'IoT Solutions', icon: Cpu, color: '#2F8FA2' },
+                  ].map(({ label, icon: Icon, color }, idx) => (
+                    <motion.div
+                      key={idx}
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ delay: 0.3 + idx * 0.1 }}
+                      className="flex items-center gap-2.5 p-3 rounded-xl border border-[#DDE2E2] bg-[#F7F8F8] hover:shadow-md transition-shadow"
+                    >
+                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}20` }}>
+                        <Icon size={16} color={color} />
                       </div>
-                      <h3 style={{ fontSize: '1.2rem', color: '#0B2340', fontWeight: '700' }}>{cap.title}</h3>
-                    </div>
-                    <p style={{ fontSize: '0.9rem', color: '#4A5568', marginBottom: '1.25rem', lineHeight: '1.55' }}>
-                      {cap.description}
-                    </p>
+                      <span className="text-[0.78rem] font-semibold text-[#0B2340]" style={{ fontFamily: "'Inter', sans-serif" }}>{label}</span>
+                    </motion.div>
+                  ))}
+                </div>
+
+                {/* Stats Mini */}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 0.7 }}
+                  className="flex gap-3"
+                >
+                  <div className="flex-1 bg-[#0B2340] rounded-xl p-3.5 text-center">
+                    <div className="text-xl font-bold text-[#59B9B4]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>10+</div>
+                    <div className="text-[0.7rem] text-white/80 font-medium">Projects</div>
                   </div>
-                  <div style={{ marginTop: 'auto', display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.8rem', color: '#2F8FA2', fontWeight: '700' }}>
-                    <span>Explore capability</span>
-                    <ArrowRight size={14} />
+                  <div className="flex-1 bg-[#2F8FA2] rounded-xl p-3.5 text-center">
+                    <div className="text-xl font-bold text-white" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>12+</div>
+                    <div className="text-[0.7rem] text-white/80 font-medium">Technologies</div>
                   </div>
-                </MosaicBlock>
+                  <div className="flex-1 bg-[#F7F8F8] border border-[#DDE2E2] rounded-xl p-3.5 text-center">
+                    <div className="text-xl font-bold text-[#0B2340]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>08</div>
+                    <div className="text-[0.7rem] text-[#4A5568] font-medium">Services</div>
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Floating badge */}
+              <motion.div
+                animate={{ y: [0, -8, 0] }}
+                transition={{ duration: 3, repeat: Infinity, ease: 'easeInOut' }}
+                className="absolute -top-4 -right-4 bg-[#2F8FA2] text-white px-4 py-2 rounded-xl shadow-xl text-xs font-bold"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                ✓ Trusted IT Partner
+              </motion.div>
+
+              {/* Floating badge 2 */}
+              <motion.div
+                animate={{ y: [0, 8, 0] }}
+                transition={{ duration: 3.5, repeat: Infinity, ease: 'easeInOut', delay: 1 }}
+                className="absolute -bottom-4 -left-4 bg-white border border-[#DDE2E2] text-[#0B2340] px-4 py-2 rounded-xl shadow-xl text-xs font-bold"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                🚀 Pune, India
+              </motion.div>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== STATS SECTION ===== */}
+      <section className="py-16 bg-white border-b border-[#DDE2E2]">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
+            {stats.map((stat, idx) => {
+              const Icon = stat.icon;
+              return (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1, duration: 0.5 }}
+                  className={`${stat.color} rounded-2xl p-6 lg:p-8`}
+                >
+                  <div className="flex items-center gap-2 mb-3 opacity-70">
+                    <Icon size={18} />
+                  </div>
+                  <div
+                    className="text-[2.8rem] lg:text-[3.5rem] font-bold leading-none mb-2"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    <AnimatedCounter target={stat.value} suffix={stat.suffix} />
+                  </div>
+                  <div className="font-bold text-sm mb-1" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {stat.label}
+                  </div>
+                  <p className="text-[0.8rem] opacity-80 leading-relaxed">{stat.desc}</p>
+                </motion.div>
               );
             })}
           </div>
         </div>
       </section>
 
-      {/* SECTION 10: PROCESS PREVIEW */}
-      <section className="section-padding border-thin" style={{ backgroundColor: '#F7F8F8' }}>
-        <div className="container">
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: '1.5rem', marginBottom: '3rem' }}>
-            <div>
-              <SectionLabel text="OUR METHODOLOGY" color="navy" />
-              <SectionHeading
-                title="From Idea to Impact."
-                subtitle="A transparent 7-step engineering process designed to take projects smoothly from concept to production release."
-              />
-            </div>
-            <Button to="/process" variant="primary" size="md">
-              Explore Our Process
-            </Button>
+      {/* ===== SERVICES PREVIEW ===== */}
+      <section className="py-20 bg-white">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-14">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+            >
+              <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#2F8FA2] uppercase mb-3">
+                WHAT WE DO
+              </span>
+              <h2 className="text-[2rem] lg:text-[2.5rem] font-bold text-[#0B2340] leading-tight max-w-[480px]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Technology Solutions Built Around Your Goals
+              </h2>
+            </motion.div>
+            <Link
+              to="/services"
+              className="flex items-center gap-2 text-[#2F8FA2] font-bold hover:text-[#0B2340] transition-colors text-sm whitespace-nowrap"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              View All Services <ArrowRight size={16} />
+            </Link>
           </div>
 
-          <ProcessTimeline detailed={false} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {serviceHighlights.map((service, idx) => {
+              const IconComp = LucideIcons[service.iconName] || LucideIcons.Code;
+              return (
+                <motion.div
+                  key={service.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.08, duration: 0.5 }}
+                  whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
+                  className="group bg-white border border-[#DDE2E2] rounded-2xl p-7 hover:border-[#2F8FA2]/40 transition-all duration-300 cursor-pointer"
+                >
+                  <div className="flex items-center gap-4 mb-4">
+                    <div
+                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                      style={{ backgroundColor: `${service.accentColor}18` }}
+                    >
+                      <IconComp size={22} color={service.accentColor} />
+                    </div>
+                    <span className="text-[0.75rem] font-bold text-[#4A5568] opacity-60" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {service.number}
+                    </span>
+                  </div>
+                  <h3 className="text-[1.05rem] font-bold text-[#0B2340] mb-2.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {service.title}
+                  </h3>
+                  <p className="text-sm text-[#4A5568] leading-relaxed mb-5">{service.shortDescription}</p>
+                  <div className="flex flex-wrap gap-1.5 mb-5">
+                    {service.capabilities.slice(0, 3).map((cap, i) => (
+                      <span key={i} className="text-[0.72rem] font-semibold bg-[#F7F8F8] border border-[#DDE2E2] text-[#0B2340] px-2.5 py-1 rounded-md">
+                        {cap}
+                      </span>
+                    ))}
+                  </div>
+                  <Link
+                    to="/services"
+                    className="flex items-center gap-1.5 text-[0.82rem] font-bold text-[#2F8FA2] group-hover:text-[#0B2340] transition-colors"
+                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                  >
+                    Learn More <ArrowRight size={13} />
+                  </Link>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0 }}
+            whileInView={{ opacity: 1 }}
+            viewport={{ once: true }}
+            className="mt-8 text-center"
+          >
+            <Link
+              to="/services"
+              className="inline-flex items-center gap-2 border-2 border-[#0B2340] text-[#0B2340] hover:bg-[#0B2340] hover:text-white px-8 py-3.5 rounded-xl font-bold text-sm transition-all duration-200"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Explore All 10 Services <ArrowRight size={16} />
+            </Link>
+          </motion.div>
         </div>
       </section>
 
-      {/* SECTION 11: CLIENT EXPERIENCE */}
-      <section className="section-padding" style={{ backgroundColor: '#FFFFFF' }}>
-        <div className="container">
-          <SectionLabel text="CLIENT EXPERIENCE" color="teal" />
-          <SectionHeading
-            title="Trusted Through Every Step."
-            subtitle="Discover feedback from product leaders and executives who partnered with MASTER DIAMOND."
-          />
+      {/* ===== ABOUT PREVIEW (DARK) ===== */}
+      <section className="py-20 bg-[#0B2340] relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none overflow-hidden">
+          <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-[#2F8FA2]/10 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-[300px] h-[300px] bg-[#59B9B4]/8 rounded-full -translate-x-1/2 translate-y-1/2" />
+        </div>
 
-          <div className="mosaic-grid mosaic-grid-12">
-            {testimonialsData.map((item, idx) => (
-              <MosaicBlock
-                key={item.id}
-                bg={idx === 0 ? 'navy' : 'white'}
-                gridSpan={idx === 0 ? 'col-span-6' : 'col-span-6'}
+        <div className="max-w-[1280px] mx-auto px-6 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={stagger}
+            >
+              <motion.span variants={fadeUp} className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">
+                ABOUT MASTER DIAMOND
+              </motion.span>
+              <motion.h2
+                variants={fadeUp}
+                className="text-[2rem] lg:text-[2.8rem] font-bold text-white leading-tight mb-6"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
               >
-                <div style={{ fontSize: '0.8rem', color: idx === 0 ? '#59B9B4' : '#2F8FA2', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '1rem' }}>
-                  {item.highlight}
-                </div>
-                <p style={{ fontSize: idx === 0 ? '1.25rem' : '1.05rem', fontStyle: 'italic', color: idx === 0 ? '#FFFFFF' : '#0B2340', marginBottom: '1.5rem', lineHeight: '1.6' }}>
+                We Don't Just Build Software.{' '}
+                <span className="text-[#59B9B4]">We Build Possibilities.</span>
+              </motion.h2>
+              <motion.p variants={fadeUp} className="text-white/85 text-[1.05rem] leading-relaxed mb-4">
+                MASTER DIAMOND is a technology solutions company focused on helping businesses embrace digital transformation.
+              </motion.p>
+              <motion.p variants={fadeUp} className="text-white/75 leading-relaxed mb-8">
+                We bring together development, design, and emerging technologies to create digital products that are easy to use, scalable, and aligned with business objectives.
+              </motion.p>
+
+              <motion.div variants={fadeUp} className="grid grid-cols-3 gap-4 mb-8 pt-6 border-t border-white/15">
+                {[
+                  { title: 'Who We Are', desc: 'Tech innovators & software engineers.' },
+                  { title: 'What We Believe', desc: 'Technology must deliver real value.' },
+                  { title: 'How We Work', desc: 'Agile, transparent & goal-oriented.' },
+                ].map((item, i) => (
+                  <div key={i}>
+                    <h4 className="text-sm font-bold text-[#59B9B4] mb-1" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{item.title}</h4>
+                    <p className="text-white/70 text-xs leading-relaxed">{item.desc}</p>
+                  </div>
+                ))}
+              </motion.div>
+
+              <motion.div variants={fadeUp}>
+                <Link
+                  to="/about"
+                  className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-7 py-3.5 rounded-xl font-bold text-sm transition-all duration-200 hover:shadow-xl"
+                  style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                >
+                  Discover Our Story <ArrowRight size={16} />
+                </Link>
+              </motion.div>
+            </motion.div>
+
+            {/* Right: Why Us Cards */}
+            <div className="grid grid-cols-2 gap-4">
+              {whyUs.map((item, idx) => (
+                <motion.div
+                  key={idx}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.1 }}
+                  className={`rounded-2xl p-5 border ${idx % 2 === 0 ? 'bg-white/8 border-white/15' : 'bg-[#2F8FA2]/20 border-[#2F8FA2]/30'}`}
+                >
+                  <div className="text-[1.5rem] font-bold text-[#59B9B4] mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                    {item.num}
+                  </div>
+                  <h4 className="font-bold text-white text-sm mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{item.title}</h4>
+                  <p className="text-white/70 text-xs leading-relaxed">{item.desc}</p>
+                  <div className="mt-3 flex flex-col gap-1">
+                    {item.points.map((pt, pi) => (
+                      <div key={pi} className="flex items-center gap-1.5 text-[0.72rem] text-[#59B9B4] font-semibold">
+                        <CheckCircle2 size={11} />
+                        {pt}
+                      </div>
+                    ))}
+                  </div>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== INDUSTRIES PREVIEW ===== */}
+      <section className="py-20 bg-[#F7F8F8]">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+            <motion.div
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true }}
+              variants={fadeUp}
+            >
+              <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#0B2340] uppercase mb-3">
+                INDUSTRIES WE SERVE
+              </span>
+              <h2 className="text-[2rem] lg:text-[2.5rem] font-bold text-[#0B2340] leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                Digital Solutions Across Industries
+              </h2>
+            </motion.div>
+            <Link
+              to="/industries"
+              className="flex items-center gap-2 text-[#2F8FA2] font-bold hover:text-[#0B2340] transition-colors text-sm whitespace-nowrap"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              All Industries <ArrowRight size={16} />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
+            {quickIndustries.map((ind, idx) => {
+              const IconComp = LucideIcons[ind.iconName] || LucideIcons.Building;
+              return (
+                <motion.div
+                  key={ind.id}
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  whileInView={{ opacity: 1, scale: 1 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: idx * 0.08 }}
+                  whileHover={{ scale: 1.05 }}
+                  className="bg-white border border-[#DDE2E2] rounded-2xl p-5 text-center hover:border-[#2F8FA2]/40 hover:shadow-lg transition-all duration-300 cursor-pointer"
+                >
+                  <div className="w-12 h-12 rounded-xl bg-[#2F8FA2]/10 flex items-center justify-center mx-auto mb-3">
+                    <IconComp size={22} className="text-[#2F8FA2]" />
+                  </div>
+                  <h3 className="text-xs font-bold text-[#0B2340]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{ind.title}</h3>
+                </motion.div>
+              );
+            })}
+          </div>
+
+          <div className="text-center mt-8">
+            <Link
+              to="/industries"
+              className="inline-flex items-center gap-2 border-2 border-[#0B2340] text-[#0B2340] hover:bg-[#0B2340] hover:text-white px-8 py-3 rounded-xl font-bold text-sm transition-all duration-200"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Explore All 10 Industries <ArrowRight size={16} />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* ===== TESTIMONIALS ===== */}
+      <section className="py-20 bg-white">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <motion.div
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true }}
+            variants={fadeUp}
+            className="text-center mb-14"
+          >
+            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#2F8FA2] uppercase mb-3">
+              CLIENT EXPERIENCE
+            </span>
+            <h2 className="text-[2rem] lg:text-[2.5rem] font-bold text-[#0B2340]" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+              Trusted Through Every Step
+            </h2>
+          </motion.div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {testimonials.map((item, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.12 }}
+                className={`rounded-2xl p-7 border flex flex-col ${idx === 0 ? 'bg-[#0B2340] border-[#0B2340]' : 'bg-white border-[#DDE2E2]'}`}
+              >
+                <Quote size={28} className={`mb-4 ${idx === 0 ? 'text-[#59B9B4]' : 'text-[#2F8FA2]'}`} />
+                <p className={`text-[0.95rem] italic leading-relaxed mb-6 flex-1 ${idx === 0 ? 'text-white' : 'text-[#0B2340]'}`}>
                   "{item.quote}"
                 </p>
-                <div style={{ marginTop: 'auto', borderTop: idx === 0 ? '1px solid rgba(255,255,255,0.2)' : '1px solid #DDE2E2', paddingTop: '1rem' }}>
-                  <div style={{ fontWeight: '700', color: idx === 0 ? '#FFFFFF' : '#0B2340' }}>
+                <div className={`pt-4 border-t ${idx === 0 ? 'border-white/20' : 'border-[#DDE2E2]'}`}>
+                  <div className="flex gap-0.5 mb-2">
+                    {[...Array(item.rating)].map((_, i) => (
+                      <Star key={i} size={13} className="fill-amber-400 text-amber-400" />
+                    ))}
+                  </div>
+                  <div className={`font-bold text-sm ${idx === 0 ? 'text-white' : 'text-[#0B2340]'}`} style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
                     {item.author}
                   </div>
-                  <div style={{ fontSize: '0.85rem', color: idx === 0 ? 'rgba(255,255,255,0.85)' : '#4A5568' }}>
-                    {item.role} • {item.location}
+                  <div className={`text-xs ${idx === 0 ? 'text-white/70' : 'text-[#4A5568]'}`}>
+                    {item.role} • {item.company}
                   </div>
                 </div>
-              </MosaicBlock>
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION 12: FAQ SECTION */}
-      <section className="section-padding border-thin" style={{ backgroundColor: '#F7F8F8' }}>
-        <div className="container" style={{ maxWidth: '900px' }}>
-          <SectionLabel text="FREQUENTLY ASKED QUESTIONS" color="navy" />
-          <SectionHeading
-            title="Got Questions? We Have Answers."
-            subtitle="Clear answers regarding our software development services, tech stack, and client engagement models."
-          />
+      {/* ===== PROCESS PREVIEW ===== */}
+      <section className="py-20 bg-[#F7F8F8]">
+        <div className="max-w-[1280px] mx-auto px-6">
+          <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6 mb-12">
+            <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={fadeUp}>
+              <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#0B2340] uppercase mb-3">
+                OUR METHODOLOGY
+              </span>
+              <h2 className="text-[2rem] lg:text-[2.5rem] font-bold text-[#0B2340] leading-tight" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                From Idea to Impact
+              </h2>
+              <p className="text-[#4A5568] mt-2 max-w-[480px]">A transparent 7-step engineering process from concept to production release.</p>
+            </motion.div>
+            <Link
+              to="/process"
+              className="flex items-center gap-2 text-[#2F8FA2] font-bold hover:text-[#0B2340] transition-colors text-sm whitespace-nowrap"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Explore Full Process <ArrowRight size={16} />
+            </Link>
+          </div>
 
-          <div>
-            {faqData.map((faq, idx) => (
-              <AccordionItem key={faq.id} item={faq} isOpenDefault={idx === 0} />
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {[
+              { num: '01', title: 'Discovery', desc: 'Business goals, requirements, and architecture planning.' },
+              { num: '02', title: 'Design', desc: 'UI/UX wireframes, prototypes, and design system creation.' },
+              { num: '03', title: 'Build', desc: 'Clean, modular code with agile 2-week sprint deliveries.' },
+              { num: '04', title: 'Launch & Support', desc: 'QA testing, deployment, monitoring, and SLA support.' },
+            ].map((step, idx) => (
+              <motion.div
+                key={idx}
+                initial={{ opacity: 0, y: 25 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: idx * 0.1 }}
+                className="bg-white border border-[#DDE2E2] rounded-2xl p-6 relative"
+              >
+                <div className="text-[2rem] font-bold text-[#2F8FA2]/25 mb-3" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{step.num}</div>
+                <h4 className="font-bold text-[#0B2340] mb-2" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>{step.title}</h4>
+                <p className="text-sm text-[#4A5568] leading-relaxed">{step.desc}</p>
+                {idx < 3 && (
+                  <div className="hidden lg:block absolute top-1/2 -right-2.5 w-5 h-5 bg-white border-r border-t border-[#DDE2E2] rotate-45 transform -translate-y-1/2 z-10" />
+                )}
+              </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* SECTION 13: FINAL CTA - DEEP NAVY BACKGROUND EXPLICIT */}
-      <section className="section-padding" style={{ backgroundColor: '#0B2340', color: '#FFFFFF', position: 'relative', overflow: 'hidden' }}>
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            backgroundImage: `radial-gradient(circle at 80% 20%, rgba(89, 185, 180, 0.18) 0%, transparent 50%)`,
-            pointerEvents: 'none'
-          }}
-        />
-
-        <div className="container" style={{ position: 'relative', zIndex: 2, textAlign: 'center', maxWidth: '800px' }}>
-          <SectionLabel text="HAVE AN IDEA?" color="aqua" />
-
-          <h2 className="text-display" style={{ color: '#FFFFFF', marginBottom: '1.25rem' }}>
-            Let's Build Something Great Together.
-          </h2>
-
-          <p style={{ fontSize: '1.2rem', color: '#FFFFFF', opacity: 0.9, marginBottom: '2.5rem', lineHeight: '1.6' }}>
-            Tell us what you're looking to build. We'll help you turn your idea into a digital solution.
-          </p>
-
-          <div style={{ display: 'flex', justifyContent: 'center', flexWrap: 'wrap', gap: '1.25rem' }}>
-            <Button to="/contact" variant="aqua" size="lg">
-              Start Your Project
-            </Button>
-            <Button to="/contact" variant="outline-white" size="lg">
-              Talk to Us
-            </Button>
-          </div>
+      {/* ===== FINAL CTA ===== */}
+      <section className="py-24 bg-[#0B2340] relative overflow-hidden">
+        <div className="absolute inset-0 pointer-events-none">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2F8FA2]/15 rounded-full translate-x-1/3 -translate-y-1/3" />
+          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#59B9B4]/10 rounded-full -translate-x-1/3 translate-y-1/3" />
+        </div>
+        <div className="max-w-[800px] mx-auto px-6 text-center relative z-10">
+          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
+            <motion.span variants={fadeUp} className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">
+              HAVE AN IDEA?
+            </motion.span>
+            <motion.h2
+              variants={fadeUp}
+              className="text-[2.5rem] lg:text-[3.2rem] font-bold text-white leading-tight mb-6"
+              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+            >
+              Let's Build Something Great Together.
+            </motion.h2>
+            <motion.p variants={fadeUp} className="text-white/80 text-[1.1rem] leading-relaxed mb-10">
+              Tell us what you're looking to build. We'll help turn your idea into a powerful digital solution.
+            </motion.p>
+            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200 hover:shadow-2xl hover:-translate-y-1"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Start Your Project <ArrowRight size={17} />
+              </Link>
+              <Link
+                to="/contact"
+                className="inline-flex items-center gap-2 border-2 border-white/30 hover:border-white text-white px-8 py-4 rounded-xl font-bold transition-all duration-200 hover:-translate-y-1"
+                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+              >
+                Talk to Us
+              </Link>
+            </motion.div>
+          </motion.div>
         </div>
       </section>
 
