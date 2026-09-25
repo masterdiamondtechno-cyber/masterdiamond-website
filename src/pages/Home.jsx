@@ -123,7 +123,7 @@ export default function Home() {
                     <path d="M2 8C50 4 100 2 150 6C200 10 250 4 298 6" stroke="#59B9B4" strokeWidth="3" strokeLinecap="round"/>
                   </svg>
                 </span>
-                {' '}That Move Businesses Forward.
+                {' '}That Move Businesses Forwardd.
               </motion.h1>
 
               <motion.p variants={fadeUp} className="text-[1.1rem] text-[#4A5568] leading-relaxed mb-8 max-w-[520px]">
