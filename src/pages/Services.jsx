@@ -39,7 +39,7 @@ export default function Services() {
       </section>
 
       {/* SERVICES NAVIGATION TABS */}
-      <div className="bg-white border-b border-[#DDE2E2] sticky top-[72px] z-50">
+     {/* <div className="bg-white border-b border-[#DDE2E2] sticky top-[72px] z-50">
         <div className="max-w-[1280px] mx-auto px-6">
           <div className="flex gap-1 overflow-x-auto py-3 scrollbar-hide">
             {servicesData.map((service) => (
@@ -54,7 +54,7 @@ export default function Services() {
             ))}
           </div>
         </div>
-      </div>
+      </div> */}
 
       {/* SERVICES LIST */}
       <section className="py-16 bg-white">
