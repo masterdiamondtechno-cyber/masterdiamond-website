@@ -7,13 +7,15 @@ export default function ServiceCard({ service }) {
   const IconComponent = LucideIcons[service.iconName] || LucideIcons.Code;
 
   return (
-    <div
-      className={`mosaic-card ${service.gridSpan}`}
+    <Link
+      to={`/services#${service.id}`}
+      className={`mosaic-card ${service.gridSpan} block no-underline text-inherit cursor-pointer`}
       style={{
         backgroundColor: '#FFFFFF',
         color: '#0B2340',
         border: '1.5px solid #DDE2E2',
-        borderRadius: '8px'
+        borderRadius: '8px',
+        textDecoration: 'none'
       }}
     >
       <div>
@@ -88,8 +90,7 @@ export default function ServiceCard({ service }) {
         )}
       </div>
 
-      <Link
-        to={`/services#${service.id}`}
+      <div
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -104,7 +105,7 @@ export default function ServiceCard({ service }) {
       >
         <span style={{ color: '#0B2340' }}>Explore Service</span>
         <ArrowRight size={14} color="#2F8FA2" />
-      </Link>
-    </div>
+      </div>
+    </Link>
   );
 }

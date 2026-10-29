@@ -1,3 +1,4 @@
+import SEO from '../components/SEO';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -74,6 +75,19 @@ const additionalTools = [
 export default function Technologies() {
   return (
     <div className="bg-white">
+      <SEO
+        title="Modern Technology Stack & Frameworks | Master Diamond"
+        description="Explore the modern tech stack leveraged by Master Diamond: React, Node.js, Python, Flutter, AWS Cloud, Docker, TensorFlow, PostgreSQL, MongoDB, and IoT protocols."
+        keywords="tech stack, React development, Node.js, Python development, Flutter apps, AWS cloud architecture, modern software engineering"
+        path="/technologies"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Technology Stack & Frameworks - Master Diamond",
+          "url": "https://masterdiamond.in/technologies",
+          "description": "Enterprise-grade technology capabilities across Frontend, Backend, Mobile, Databases, Cloud & DevOps, AI/ML, and IoT."
+        }}
+      />
 
       {/* HERO */}
       <section className="bg-[#0B2340] py-24 relative overflow-hidden">
@@ -242,27 +256,7 @@ export default function Technologies() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#0B2340] text-center">
-        <div className="max-w-[700px] mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">LET'S DISCUSS</span>
-            <h2 className="text-[2.2rem] font-bold text-white mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              What Technology Fits Your Project?
-            </h2>
-            <p className="text-white/80 mb-8">
-              Let's talk about your project requirements and we'll recommend the best technology stack for your specific goals.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Discuss Your Project <ArrowRight size={17} />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+
     </div>
   );
 }

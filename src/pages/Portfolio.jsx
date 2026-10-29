@@ -1,3 +1,4 @@
+import SEO from '../components/SEO';
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -126,6 +127,19 @@ export default function Portfolio() {
 
   return (
     <div className="bg-white">
+      <SEO
+        title="Portfolio & Case Studies | Master Diamond"
+        description="Browse Master Diamond's case studies across IoT dashboards, healthcare portals, AI document engines, and enterprise web and mobile platforms."
+        keywords="software case studies, IoT projects, web application portfolio, mobile apps portfolio, Master Diamond work"
+        path="/portfolio"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "name": "Master Diamond Software Portfolio & Case Studies",
+          "url": "https://masterdiamond.in/portfolio",
+          "description": "Showcase of enterprise software, mobile apps, web applications, and IoT solutions built for clients across sectors."
+        }}
+      />
 
       {/* HERO */}
       <section className="bg-[#0B2340] py-24 relative overflow-hidden">
@@ -295,36 +309,7 @@ export default function Portfolio() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#0B2340] text-center">
-        <div className="max-w-[700px] mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">START YOUR PROJECT</span>
-            <h2 className="text-[2.2rem] font-bold text-white mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Ready to Build Something Like This?
-            </h2>
-            <p className="text-white/80 mb-8">
-              Share your idea with us and we'll craft a solution that delivers real results for your business.
-            </p>
-            <div className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                Start Your Project <ArrowRight size={17} />
-              </Link>
-              <Link
-                to="/services"
-                className="inline-flex items-center gap-2 border-2 border-white/30 hover:border-white text-white px-8 py-4 rounded-xl font-bold transition-all duration-200"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                View All Services
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+
     </div>
   );
 }

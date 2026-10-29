@@ -1,3 +1,4 @@
+import SEO from '../components/SEO';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -24,6 +25,30 @@ const teamValues = [
 export default function About() {
   return (
     <div className="bg-white">
+      <SEO
+        title="About Us - Software Engineering & Innovation | Master Diamond"
+        description="Learn about Master Diamond, a premier software engineering & digital transformation partner from Pune, India, dedicated to high performance, transparency, and innovation."
+        keywords="about Master Diamond, software company Pune, IT consultancy India, software engineering team, digital product agency"
+        path="/about"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "AboutPage",
+          "name": "About Master Diamond",
+          "url": "https://masterdiamond.in/about",
+          "description": "Master Diamond is a technology firm that engineers modern web applications, mobile platforms, enterprise software, and cloud systems.",
+          "mainEntity": {
+            "@type": "Organization",
+            "name": "Master Diamond",
+            "url": "https://masterdiamond.in",
+            "address": {
+              "@type": "PostalAddress",
+              "addressLocality": "Pune",
+              "addressRegion": "Maharashtra",
+              "addressCountry": "IN"
+            }
+          }
+        }}
+      />
 
       {/* HERO */}
       <section className="bg-[#0B2340] py-24 relative overflow-hidden">
@@ -254,35 +279,7 @@ export default function About() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#0B2340] text-center">
-        <div className="max-w-[700px] mx-auto px-6">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.span variants={fadeUp} className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">
-              WORK WITH MASTER DIAMOND
-            </motion.span>
-            <motion.h2
-              variants={fadeUp}
-              className="text-[2.2rem] lg:text-[2.8rem] font-bold text-white mb-5"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Ready to Build Your Digital Future?
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-white/80 text-[1.05rem] mb-8">
-              Let's discuss how MASTER DIAMOND can partner with your team to deliver exceptional software products.
-            </motion.p>
-            <motion.div variants={fadeUp}>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200 hover:shadow-xl"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                Start a Conversation <ArrowRight size={17} />
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+
 
     </div>
   );

@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import SEO from '../components/SEO';
+import React, { useEffect } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
 import { servicesData } from '../data/services';
@@ -11,8 +12,62 @@ const fadeUp = {
 };
 
 export default function Services() {
+  const { hash } = useLocation();
+
+  useEffect(() => {
+    if (hash) {
+      const targetId = hash.replace('#', '');
+      const scrollToCard = () => {
+        const element = document.getElementById(targetId);
+        if (element) {
+          const headerOffset = 90;
+          const elementPosition = element.getBoundingClientRect().top;
+          const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+
+          window.scrollTo({
+            top: offsetPosition,
+            behavior: 'smooth'
+          });
+          return true;
+        }
+        return false;
+      };
+
+      if (!scrollToCard()) {
+        const delays = [50, 150, 300, 500, 800, 1200];
+        const timers = delays.map((ms) => setTimeout(scrollToCard, ms));
+        return () => timers.forEach(clearTimeout);
+      }
+    }
+  }, [hash]);
   return (
     <div className="bg-white">
+      <SEO
+        title="Digital & Software Services | Master Diamond"
+        description="Explore Master Diamond's 10 core digital service capabilities: Web Development, Mobile Apps, Custom Software, UI/UX Design, IoT Solutions, AI & ML, Cloud Architecture, SEO, and Maintenance."
+        keywords="web development, mobile app development, custom software engineering, IoT solutions, AI machine learning, cloud architecture, SEO services, Master Diamond services"
+        path="/services"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Master Diamond Technology Services",
+          "itemListElement": servicesData.map((s, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "item": {
+              "@type": "Service",
+              "name": s.title,
+              "description": s.shortDescription,
+              "url": "https://masterdiamond.in/services#" + s.id,
+              "provider": {
+                "@type": "Organization",
+                "name": "Master Diamond",
+                "url": "https://masterdiamond.in"
+              }
+            }
+          }))
+        }}
+      />
 
       {/* HERO */}
       <section className="bg-[#0B2340] py-24 relative overflow-hidden">
@@ -175,29 +230,7 @@ export default function Services() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#0B2340] text-center">
-        <div className="max-w-[700px] mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">
-              NEED A CUSTOM SOLUTION?
-            </span>
-            <h2 className="text-[2.2rem] font-bold text-white mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Have a Specific Requirement in Mind?
-            </h2>
-            <p className="text-white/80 mb-8">
-              Reach out to our technical team to discuss tailored software development for your business goals.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Start Your Project <ArrowRight size={17} />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+
     </div>
   );
 }

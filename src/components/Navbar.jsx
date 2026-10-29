@@ -56,16 +56,15 @@ export default function Navbar() {
       />
 
       <header
-        className={`sticky top-0 left-0 right-0 z-[1000] transition-all duration-300 ${
-          scrolled
-            ? 'bg-white/95 backdrop-blur-md shadow-[0_2px_20px_rgba(0,0,0,0.08)] border-b border-[#DDE2E2]'
-            : 'bg-white border-b border-transparent'
-        }`}
+        className={`sticky top-0 left-0 right-0 z-[1000] transition-all duration-300 ${scrolled
+          ? 'bg-white/95 backdrop-blur-md shadow-[0_2px_20px_rgba(0,0,0,0.08)] border-b border-[#DDE2E2]'
+          : 'bg-white border-b border-transparent'
+          }`}
       >
         <div className="max-w-[1280px] mx-auto px-6 flex items-center justify-between h-[72px]">
           {/* Logo */}
           <Link to="/" className="flex items-center gap-3 no-underline">
-            <img src="/logo.png" alt="MASTER DIAMOND" className="h-16 w-auto object-contain" />
+            <img src="/logo.png" alt="Master Diamond Digital Solutions" width="120" height="80" fetchpriority="high" className="h-16 w-auto object-contain" />
           </Link>
 
           {/* Desktop Nav */}
@@ -81,11 +80,10 @@ export default function Navbar() {
                 >
                   <NavLink
                     to={link.path}
-                    className={`relative flex items-center gap-1 px-3 py-2 rounded-lg text-[0.9rem] font-semibold transition-all duration-200 ${
-                      isActive
-                        ? 'text-[#0B2340] bg-[#F7F8F8]'
-                        : 'text-[#4A5568] hover:text-[#0B2340] hover:bg-[#F7F8F8]'
-                    }`}
+                    className={`relative flex items-center gap-1 px-3 py-2 rounded-lg text-[0.9rem] font-semibold transition-all duration-200 ${isActive
+                      ? 'text-[#0B2340] bg-[#F7F8F8]'
+                      : 'text-[#4A5568] hover:text-[#0B2340] hover:bg-[#F7F8F8]'
+                      }`}
                     style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                   >
                     {link.name}
@@ -114,6 +112,22 @@ export default function Navbar() {
                             <Link
                               key={item.name}
                               to={item.path}
+                              onClick={() => {
+                                setActiveDropdown(null);
+                                if (item.path.includes('#')) {
+                                  const targetId = item.path.split('#')[1];
+                                  const scrollToTarget = () => {
+                                    const element = document.getElementById(targetId);
+                                    if (element) {
+                                      const headerOffset = 90;
+                                      const offsetPosition = element.getBoundingClientRect().top + window.pageYOffset - headerOffset;
+                                      window.scrollTo({ top: offsetPosition, behavior: 'smooth' });
+                                    }
+                                  };
+                                  setTimeout(scrollToTarget, 50);
+                                  setTimeout(scrollToTarget, 200);
+                                }
+                              }}
                               className="block px-4 py-2.5 text-sm font-semibold text-[#4A5568] hover:text-[#0B2340] hover:bg-[#F7F8F8] transition-colors"
                               style={{ fontFamily: "'Inter', sans-serif" }}
                             >
@@ -167,11 +181,10 @@ export default function Navbar() {
                   key={link.name}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-[1rem] font-bold transition-colors ${
-                    location.pathname === link.path
-                      ? 'text-[#2F8FA2] bg-[#F7F8F8]'
-                      : 'text-[#0B2340] hover:bg-[#F7F8F8]'
-                  }`}
+                  className={`flex items-center justify-between px-4 py-3 rounded-xl text-[1rem] font-bold transition-colors ${location.pathname === link.path
+                    ? 'text-[#2F8FA2] bg-[#F7F8F8]'
+                    : 'text-[#0B2340] hover:bg-[#F7F8F8]'
+                    }`}
                   style={{ fontFamily: "'Space Grotesk', sans-serif" }}
                 >
                   {link.name}
@@ -187,7 +200,7 @@ export default function Navbar() {
                 >
                   Let's Talk →
                 </Link>
-                <p className="text-center text-sm text-[#4A5568] mt-3">Pune, India • +91 79723 59869</p>
+                <p className="text-center text-sm text-[#4A5568] mt-3">Pune, India • +91 7219697621</p>
               </div>
             </div>
           </motion.div>

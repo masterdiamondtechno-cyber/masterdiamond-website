@@ -1,3 +1,4 @@
+import SEO from '../components/SEO';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -60,6 +61,24 @@ const timelineSteps = [
 export default function Process() {
   return (
     <div className="bg-white">
+      <SEO
+        title="Our Engineering Process & Methodology | Master Diamond"
+        description="Discover Master Diamond's agile software delivery process: Discovery & Strategy, UI/UX Design, Agile Development, Testing & QA, and Deployment & Maintenance."
+        keywords="agile development methodology, software engineering process, sprint demos, QA testing, DevOps deployment"
+        path="/process"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "HowTo",
+          "name": "Master Diamond Software Development Process",
+          "description": "5-stage engineering methodology from discovery to long-term deployment.",
+          "step": timelineSteps.map((s, index) => ({
+            "@type": "HowToStep",
+            "position": index + 1,
+            "name": s.title,
+            "text": s.desc
+          }))
+        }}
+      />
 
       {/* HERO */}
       <section className="bg-[#0B2340] py-24 relative overflow-hidden">
@@ -199,27 +218,7 @@ export default function Process() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#0B2340] text-center">
-        <div className="max-w-[700px] mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">START A PROJECT</span>
-            <h2 className="text-[2.2rem] font-bold text-white mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Ready to Begin Step 01?
-            </h2>
-            <p className="text-white/80 mb-8">
-              Schedule an initial discovery call to map out your software architecture roadmap with MASTER DIAMOND.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Schedule Discovery Call <ArrowRight size={17} />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+
     </div>
   );
 }

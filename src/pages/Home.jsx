@@ -1,3 +1,4 @@
+import SEO from '../components/SEO';
 import React, { useState, useEffect, useRef } from 'react';
 import { Link } from 'react-router-dom';
 import { motion, useInView } from 'framer-motion';
@@ -86,6 +87,24 @@ const quickIndustries = industriesData.slice(0, 6);
 export default function Home() {
   return (
     <div className="bg-white">
+      <SEO
+        title="Master Diamond | Digital Solutions & Technology Services"
+        description="Master Diamond delivers enterprise digital solutions, bespoke web development, mobile applications, custom software, IoT telemetry, AI automation, and cloud engineering."
+        keywords="Master Diamond, software development company, web development, mobile app development, custom software, IoT solutions, AI machine learning, Pune India, digital transformation"
+        path="/"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "WebPage",
+          "name": "Master Diamond - Digital Solutions & Technology Services",
+          "url": "https://masterdiamond.in/",
+          "description": "Full-spectrum digital solutions company specializing in modern web platforms, mobile apps, enterprise software, and IoT/AI systems.",
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "Master Diamond",
+            "url": "https://masterdiamond.in"
+          }
+        }}
+      />
 
       {/* ===== HERO SECTION ===== */}
       <section className="relative bg-[#F7F8F8] overflow-hidden py-20 lg:py-28">
@@ -208,22 +227,26 @@ export default function Home() {
                 {/* Service Cards Mini */}
                 <div className="grid grid-cols-2 gap-3 mb-5">
                   {[
-                    { label: 'Web Development', icon: Globe, color: '#2F8FA2' },
-                    { label: 'Mobile Apps', icon: Smartphone, color: '#0B2340' },
-                    { label: 'AI & Machine Learning', icon: Brain, color: '#59B9B4' },
-                    { label: 'IoT Solutions', icon: Cpu, color: '#2F8FA2' },
-                  ].map(({ label, icon: Icon, color }, idx) => (
+                    { label: 'Web Development', icon: Globe, color: '#2F8FA2', id: 'web-development' },
+                    { label: 'Mobile Apps', icon: Smartphone, color: '#0B2340', id: 'mobile-app-development' },
+                    { label: 'AI & Machine Learning', icon: Brain, color: '#59B9B4', id: 'ai-machine-learning' },
+                    { label: 'IoT Solutions', icon: Cpu, color: '#2F8FA2', id: 'iot-solutions' },
+                  ].map(({ label, icon: Icon, color, id }, idx) => (
                     <motion.div
                       key={idx}
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: 0.3 + idx * 0.1 }}
-                      className="flex items-center gap-2.5 p-3 rounded-xl border border-[#DDE2E2] bg-[#F7F8F8] hover:shadow-md transition-shadow"
                     >
-                      <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}20` }}>
-                        <Icon size={16} color={color} />
-                      </div>
-                      <span className="text-[0.78rem] font-semibold text-[#0B2340]" style={{ fontFamily: "'Inter', sans-serif" }}>{label}</span>
+                      <Link
+                        to={`/services#${id}`}
+                        className="flex items-center gap-2.5 p-3 rounded-xl border border-[#DDE2E2] bg-[#F7F8F8] hover:shadow-md hover:border-[#2F8FA2]/50 transition-all cursor-pointer block"
+                      >
+                        <div className="w-8 h-8 rounded-lg flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${color}20` }}>
+                          <Icon size={16} color={color} />
+                        </div>
+                        <span className="text-[0.78rem] font-semibold text-[#0B2340]" style={{ fontFamily: "'Inter', sans-serif" }}>{label}</span>
+                      </Link>
                     </motion.div>
                   ))}
                 </div>
@@ -346,36 +369,40 @@ export default function Home() {
                   viewport={{ once: true }}
                   transition={{ delay: idx * 0.08, duration: 0.5 }}
                   whileHover={{ y: -5, boxShadow: '0 20px 40px rgba(0,0,0,0.08)' }}
-                  className="group bg-white border border-[#DDE2E2] rounded-2xl p-7 hover:border-[#2F8FA2]/40 transition-all duration-300 cursor-pointer"
+                  className="h-full"
                 >
-                  <div className="flex items-center gap-4 mb-4">
-                    <div
-                      className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
-                      style={{ backgroundColor: `${service.accentColor}18` }}
-                    >
-                      <IconComp size={22} color={service.accentColor} />
-                    </div>
-                    <span className="text-[0.75rem] font-bold text-[#4A5568] opacity-60" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                      {service.number}
-                    </span>
-                  </div>
-                  <h3 className="text-[1.05rem] font-bold text-[#0B2340] mb-2.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-                    {service.title}
-                  </h3>
-                  <p className="text-sm text-[#4A5568] leading-relaxed mb-5">{service.shortDescription}</p>
-                  <div className="flex flex-wrap gap-1.5 mb-5">
-                    {service.capabilities.slice(0, 3).map((cap, i) => (
-                      <span key={i} className="text-[0.72rem] font-semibold bg-[#F7F8F8] border border-[#DDE2E2] text-[#0B2340] px-2.5 py-1 rounded-md">
-                        {cap}
-                      </span>
-                    ))}
-                  </div>
                   <Link
-                    to="/services"
-                    className="flex items-center gap-1.5 text-[0.82rem] font-bold text-[#2F8FA2] group-hover:text-[#0B2340] transition-colors"
-                    style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    to={`/services#${service.id}`}
+                    className="group bg-white border border-[#DDE2E2] rounded-2xl p-7 hover:border-[#2F8FA2]/40 transition-all duration-300 cursor-pointer flex flex-col h-full block"
                   >
-                    Learn More <ArrowRight size={13} />
+                    <div className="flex items-center gap-4 mb-4">
+                      <div
+                        className="w-12 h-12 rounded-xl flex items-center justify-center flex-shrink-0 group-hover:scale-110 transition-transform duration-300"
+                        style={{ backgroundColor: `${service.accentColor}18` }}
+                      >
+                        <IconComp size={22} color={service.accentColor} />
+                      </div>
+                      <span className="text-[0.75rem] font-bold text-[#4A5568] opacity-60" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                        {service.number}
+                      </span>
+                    </div>
+                    <h3 className="text-[1.05rem] font-bold text-[#0B2340] mb-2.5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
+                      {service.title}
+                    </h3>
+                    <p className="text-sm text-[#4A5568] leading-relaxed mb-5">{service.shortDescription}</p>
+                    <div className="flex flex-wrap gap-1.5 mb-5 mt-auto">
+                      {service.capabilities.slice(0, 3).map((cap, i) => (
+                        <span key={i} className="text-[0.72rem] font-semibold bg-[#F7F8F8] border border-[#DDE2E2] text-[#0B2340] px-2.5 py-1 rounded-md">
+                          {cap}
+                        </span>
+                      ))}
+                    </div>
+                    <div
+                      className="flex items-center gap-1.5 text-[0.82rem] font-bold text-[#2F8FA2] group-hover:text-[#0B2340] transition-colors pt-2"
+                      style={{ fontFamily: "'Space Grotesk', sans-serif" }}
+                    >
+                      Learn More <ArrowRight size={13} />
+                    </div>
                   </Link>
                 </motion.div>
               );
@@ -647,46 +674,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ===== FINAL CTA ===== */}
-      <section className="py-24 bg-[#0B2340] relative overflow-hidden">
-        <div className="absolute inset-0 pointer-events-none">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-[#2F8FA2]/15 rounded-full translate-x-1/3 -translate-y-1/3" />
-          <div className="absolute bottom-0 left-0 w-64 h-64 bg-[#59B9B4]/10 rounded-full -translate-x-1/3 translate-y-1/3" />
-        </div>
-        <div className="max-w-[800px] mx-auto px-6 text-center relative z-10">
-          <motion.div initial="hidden" whileInView="visible" viewport={{ once: true }} variants={stagger}>
-            <motion.span variants={fadeUp} className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">
-              HAVE AN IDEA?
-            </motion.span>
-            <motion.h2
-              variants={fadeUp}
-              className="text-[2.5rem] lg:text-[3.2rem] font-bold text-white leading-tight mb-6"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Let's Build Something Great Together.
-            </motion.h2>
-            <motion.p variants={fadeUp} className="text-white/80 text-[1.1rem] leading-relaxed mb-10">
-              Tell us what you're looking to build. We'll help turn your idea into a powerful digital solution.
-            </motion.p>
-            <motion.div variants={fadeUp} className="flex flex-wrap justify-center gap-4">
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200 hover:shadow-2xl hover:-translate-y-1"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                Start Your Project <ArrowRight size={17} />
-              </Link>
-              <Link
-                to="/contact"
-                className="inline-flex items-center gap-2 border-2 border-white/30 hover:border-white text-white px-8 py-4 rounded-xl font-bold transition-all duration-200 hover:-translate-y-1"
-                style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-              >
-                Talk to Us
-              </Link>
-            </motion.div>
-          </motion.div>
-        </div>
-      </section>
+
 
     </div>
   );

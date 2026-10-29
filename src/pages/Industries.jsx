@@ -1,3 +1,4 @@
+import SEO from '../components/SEO';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
@@ -13,6 +14,23 @@ const fadeUp = {
 export default function Industries() {
   return (
     <div className="bg-white">
+      <SEO
+        title="Industry Solutions & Sector Expertise | Master Diamond"
+        description="Bespoke digital software solutions tailored for Healthcare, Education, E-Commerce, Finance & Fintech, Agriculture, Manufacturing, Logistics, and Real Estate."
+        keywords="healthcare software development, fintech software, ecommerce development, agricultural IoT software, manufacturing ERP solutions, industry tech solutions"
+        path="/industries"
+        jsonLd={{
+          "@context": "https://schema.org",
+          "@type": "ItemList",
+          "name": "Master Diamond Industry Solutions",
+          "itemListElement": industriesData.map((item, index) => ({
+            "@type": "ListItem",
+            "position": index + 1,
+            "name": item.title,
+            "description": item.tagline || (item.title + " digital solutions by Master Diamond")
+          }))
+        }}
+      />
 
       {/* HERO */}
       <section className="bg-[#0B2340] py-24 relative overflow-hidden">
@@ -170,27 +188,7 @@ export default function Industries() {
         </div>
       </section>
 
-      {/* CTA */}
-      <section className="py-20 bg-[#0B2340] text-center">
-        <div className="max-w-[700px] mx-auto px-6">
-          <motion.div initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}>
-            <span className="inline-block text-[0.75rem] font-bold tracking-[0.12em] text-[#59B9B4] uppercase mb-4">ENTERPRISE CONSULTING</span>
-            <h2 className="text-[2.2rem] font-bold text-white mb-5" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-              Transforming Your Industry Sector
-            </h2>
-            <p className="text-white/80 mb-8">
-              Partner with MASTER DIAMOND to engineer custom digital platforms engineered for your domain.
-            </p>
-            <Link
-              to="/contact"
-              className="inline-flex items-center gap-2 bg-[#59B9B4] hover:bg-white text-[#0B2340] px-8 py-4 rounded-xl font-bold transition-all duration-200"
-              style={{ fontFamily: "'Space Grotesk', sans-serif" }}
-            >
-              Discuss Sector Goals <ArrowRight size={17} />
-            </Link>
-          </motion.div>
-        </div>
-      </section>
+
     </div>
   );
 }

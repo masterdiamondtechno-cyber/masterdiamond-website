@@ -2,10 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { Home } from 'lucide-react';
 import { motion } from 'framer-motion';
+import SEO from '../components/SEO';
 
 export default function NotFound() {
   return (
     <div className="bg-white min-h-[80vh] flex flex-col items-center justify-center py-20 px-6 text-center">
+      <SEO
+        title="404 Page Not Found | Master Diamond"
+        description="The page you are looking for could not be found. Return to Master Diamond homepage to explore our software services and portfolio."
+        path="/404"
+      />
       <motion.div
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
